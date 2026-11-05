@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Late DCT and Collecting Duct: Solute Transport</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:#c9d4c8;font-family:Verdana,"DejaVu Sans",sans-serif;color:#1d2a1d}
+#wrap{max-width:1200px;margin:0 auto;padding:12px 12px 28px}
+#bar,#bar2{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 10px;align-items:center}
+#bar span,#bar2 span{font-size:13px;color:#4a5a48;margin-right:2px}
+.sb{--c:#555;border:2px solid var(--c);background:rgba(255,255,255,.35);color:#1d2a1d;border-radius:999px;padding:6px 14px;font:inherit;font-size:14px;cursor:pointer}
+.sb.on{background:var(--c);color:#fff}.sb.g{--c:#6b7a68}
+svg{display:block;width:100%;height:auto;user-select:none}
+#info{margin-top:10px;background:#bcc7b8;border-radius:10px;padding:12px 14px;font-size:15px;line-height:1.5;min-height:74px}
+#bar .sb.dot::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--c);margin-right:7px}#bar .sb.dot.on::before{background:#fff}#bar:not(.pon) .sb.dot::before{display:none}
+
+/* Gentle fades for all toggled transporters, pathways and annotations */
+.sb{transition:background-color .3s ease,color .3s ease,border-color .3s ease,transform .25s ease}
+.sb:active{transform:scale(.96)}
+.el,.al,.be,.ald,.fx,.tk,#adh-water-drops,#ptc,#fl{transition:opacity .55s ease,visibility .55s ease}
+#info{transition:background-color .4s ease}
+#ttl{transition:opacity .35s ease}
+@media (prefers-reduced-motion:reduce){.el,.al,.be,.ald,.fx,.tk,#adh-water-drops,#ptc,#fl,.sb{transition-duration:.08s}}
+.liddle-out{display:none;opacity:0;transform:translateY(-7px);transition:opacity .5s,transform .5s;background:#f5e8d7;border:2px solid #b87537;border-radius:12px;padding:13px 16px;margin:10px 0;color:#49311b}.liddle-out.show{display:block;opacity:1;transform:translateY(0)}.out-title{font-size:17px;font-weight:bold;margin-bottom:10px}.out-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px}.out-grid>div{background:#fff9f1;border-radius:8px;padding:10px}.out-grid b{display:block;font-size:15px}.out-grid small{display:block;margin-top:5px;line-height:1.4}.out-foot{margin-top:10px;font-size:13px}#liddleArrows{pointer-events:none}#liddleArrows .pulse{animation:lidPulse 1.8s ease-in-out infinite}@keyframes lidPulse{0%,100%{opacity:.45}50%{opacity:1}}@media(prefers-reduced-motion:reduce){#liddleArrows .pulse{animation:none}}
+ .di-out{display:none;opacity:0;transform:translateY(-7px);transition:opacity .5s,transform .5s;background:#e4f0fc;border:2px solid #4b83ba;border-radius:12px;padding:13px 16px;margin:10px 0;color:#173d63}.di-out.show{display:block;opacity:1;transform:translateY(0)}.di-out .out-grid>div{background:#f7fbff}
+</style></head><body>
+<div id="wrap"><div id="bar"><span>Solutes:</span></div>
+<svg id="fig" viewBox="0 0 1300 840" xmlns="http://www.w3.org/2000/svg" font-family="Verdana,'DejaVu Sans',sans-serif">
+<defs id="defs">
+<clipPath id="pc"><rect x="30" y="60" width="1240" height="770" rx="18"/></clipPath>
+<pattern id="hp" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="10" fill="#e0a58f"/><rect width="5" height="10" fill="#b8553a"/></pattern>
+<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10Z" fill="#111"/></marker>
+</defs>
+<rect width="1300" height="840" fill="#c9d4c8"/>
+<text x="650" y="34" font-size="24" font-weight="bold" text-anchor="middle" fill="#111">LATE DCT AND COLLECTING DUCT</text>
+<g clip-path="url(#pc)"><rect x="30" y="60" width="260" height="770" fill="#d4d4d4"/></g>
+<path d="M1115,172 L1115,810 A70,24 0 0 0 1255,810 L1255,172 Z" fill="#ffcccc"/><ellipse cx="1185" cy="172" rx="70" ry="24" fill="#ffe3e3"/>
+<rect x="290" y="112" width="590" height="318" rx="40" fill="#cfdae8" stroke="#7d9bc4" stroke-width="7"/>
+<rect x="290" y="452" width="590" height="368" rx="40" fill="#cfdae8" stroke="#7d9bc4" stroke-width="7"/>
+<rect x="405" y="428" width="46" height="35" fill="url(#hp)" stroke="#8a4a38" stroke-width="2"/>
+<path d="M170 140 L210 140 L210 205 L235 205 L190 255 L145 205 L170 205Z" fill="#f6e4a8"/>
+<path d="M170 485 L210 485 L210 550 L235 550 L190 600 L145 550 L170 550Z" fill="#f6e4a8"/>
+<text id="ttl" x="585" y="100" font-size="20" text-anchor="middle" fill="#111">α-Intercalated cell</text>
+<text x="585" y="447" font-size="20" text-anchor="middle" fill="#111">Principal cell</text>
+<text x="48" y="92" font-size="20" font-weight="bold" fill="#111">Lumen</text><text x="1252" y="92" font-size="20" font-weight="bold" text-anchor="end" fill="#111">Blood</text>
+<text x="48" y="432" font-size="20" font-weight="bold" fill="#111">Lumen</text><text x="1252" y="432" font-size="20" font-weight="bold" text-anchor="end" fill="#111">Blood</text>
+<g fill="#fff" stroke="#8a8a8a" stroke-width="2"><rect x="48" y="104" width="86" height="32" rx="3"/><rect x="1168" y="104" width="84" height="32" rx="3"/><rect x="48" y="444" width="86" height="32" rx="3"/><rect x="1168" y="444" width="84" height="32" rx="3"/></g>
+<g font-size="19" fill="#111" text-anchor="middle" dominant-baseline="central"><text class="mv" x="91" y="121"></text><text class="mv" x="91" y="461"></text><text x="1210" y="121">0 mV</text><text x="1210" y="461">0 mV</text></g>
+<g id="dyn"></g><g id="ptc"></g><text id="fl" x="160" y="121" font-size="15" fill="#33404c" dominant-baseline="central">Fluid flow ↓</text><g id="fx"></g></svg>
+<div id="liddleOut" class="liddle-out" aria-live="polite"><div class="out-title">Liddle syndrome — consequences of constitutively active ENaC</div><div class="out-grid"><div><b>↑ Na⁺ reabsorption</b><small>Na⁺ and water retention → extracellular volume expansion</small></div><div><b>↑ Blood pressure</b><small>Volume-dependent hypertension</small></div><div><b>↑ K⁺ secretion</b><small>Hypokalaemia</small></div><div><b>↑ H⁺ secretion</b><small>Metabolic alkalosis</small></div><div><b>↓ Renin · ↓ Aldosterone</b><small>Suppressed by volume expansion</small></div></div><div class="out-foot">ENaC is overactive independently of aldosterone. Amiloride or triamterene inhibits ENaC; spironolactone is generally ineffective.</div></div><div id="diOut" class="di-out" aria-live="polite"><div class="out-title">Diabetes insipidus — reduced collecting duct water permeability</div><div class="out-grid"><div><b>↓ Functional AQP2 at apical membrane</b><small>Water cannot enter the principal cell effectively</small></div><div><b>↓ Water reabsorption</b><small>Water remains in the tubular lumen</small></div><div><b>↑ Dilute urine</b><small>Polyuria and low urine osmolality</small></div><div><b>↑ Thirst</b><small>Risk of dehydration and hypernatraemia if water intake is inadequate</small></div></div><div class="out-foot"><b>Central DI:</b> insufficient ADH secretion; responds to desmopressin. <b>Nephrogenic DI:</b> impaired renal response to ADH; desmopressin has little or no effect. This diagram illustrates their shared final water-transport defect.</div></div><div id="bar2" style="margin:10px 0 0"><span>Hormones and drugs:</span></div>
+<div id="info"></div></div>
+<script>
+const $=s=>document.querySelector(s);
+const TK={Na:['Na⁺','#8d8a1b'],K:['K⁺','#d62d20'],H:['H⁺','#2b4fd6'],B:['HCO₃⁻','#b8505e'],H2O:['H₂O','#2b8fd6'],Cl:['Cl⁻','#2e7d4f']};
+const SH={Na:'Na⁺',K:'K⁺',H:'H⁺',B:'HCO₃⁻',H2O:'H₂O',Cl:'Cl⁻'};
+const INFO={Na:'<b>Na⁺</b> enters the principal cell through ENaC channels, down a steep gradient, and the Na⁺–K⁺ ATPase pumps it out to the blood. Na⁺ entry makes the lumen negative (−50 mV), which in turn pulls K⁺ and H⁺ into the lumen.',
+K:'<b>K⁺</b> has two routes. In the principal cell the Na⁺–K⁺ ATPase brings K⁺ in and it leaves through a K⁺ channel into the lumen, down its gradient (secretion). In the α-intercalated cell the H⁺/K⁺-ATPase takes K⁺ from the lumen and it exits to the blood (reabsorption).',
+H:'<b>H⁺</b> is secreted into the lumen by the α-intercalated cell, by an H⁺-ATPase and by the H⁺/K⁺-ATPase. Carbonic anhydrase (CA) makes the H⁺ from CO₂ + H₂O. This is how the collecting duct acidifies the urine.',
+B:'<b>HCO₃⁻</b> is made together with H⁺ by carbonic anhydrase in the α-intercalated cell and leaves across the blood-side membrane (dashed arrow; the exchanger is not labeled in the figure). Each H⁺ secreted adds a new HCO₃⁻ to the blood.',
+H2O:'<b>Water</b> is reabsorbed in the principal cell only when ADH is present. ADH inserts AQP2 into the lumen membrane, and water leaves to the blood through AQP3 and AQP4. Turn on ADH to see it.',
+ALD:'<b>Aldosterone ↑</b> increases the activity of the Na⁺–K⁺ ATPase, ENaC, the H⁺-ATPase and the K⁺ channel. More NaCl is reabsorbed, and more K⁺ and H⁺ are secreted. In the figure, the extra ENaC channels and Na⁺–K⁺ ATPase pumps (red outlines) show the increase.',
+ADH:'<b>ADH</b> puts AQP2 channels into the lumen membrane of the principal cell. Water then follows the osmotic gradient through AQP2 and AQP3/4 into the blood, concentrating the urine.',
+KSD:'<b>K⁺-sparing diuretics</b> block Na⁺ entry through ENaC (amiloride, triamterene) or block the aldosterone receptor (spironolactone, eplerenone). Less Na⁺ enters, the lumen becomes less negative, and less K⁺ and H⁺ are secreted, so K⁺ can rise (hyperkalemia).'};
+INFO.Cl='<b>Cl⁻</b> is not moved by the transporters of the α-intercalated cell or the principal cell shown here. Switch to the β-intercalated cell to see Cl⁻/HCO₃⁻ exchange by pendrin.';
+INFO.AB='<b>α-intercalated cell</b>: secretes H⁺ into the lumen (H⁺-ATPase and H⁺/K⁺-ATPase) and returns HCO₃⁻ to the blood. It acidifies the urine and reabsorbs K⁺.';
+const INFOB={AB:'<b>β-intercalated cell</b>: the transporters are reversed. Pendrin (a Cl⁻/HCO₃⁻ exchanger) sits on the lumen side and secretes HCO₃⁻, while an H⁺-ATPase sits on the blood side and pumps H⁺ into the blood. It makes the urine more alkaline, and it has no H⁺/K⁺-ATPase.',H:'<b>H⁺</b> in the β-intercalated cell is pumped out across the blood-side membrane by an H⁺-ATPase, the opposite side from the α cell, so the urine is not acidified.',B:'<b>HCO₃⁻</b> is secreted into the lumen by pendrin, a Cl⁻/HCO₃⁻ exchanger on the lumen membrane. The HCO₃⁻ comes from carbonic anhydrase (CA), which makes H⁺ and HCO₃⁻ from CO₂ and water. This removes HCO₃⁻ from the body, which helps in metabolic alkalosis.',Cl:'<b>Cl⁻</b> enters the β-intercalated cell from the lumen in exchange for HCO₃⁻ through pendrin and leaves across the blood side through a Cl⁻ channel.',K:'<b>K⁺</b> reabsorption by the H⁺/K⁺-ATPase belongs to the α-intercalated cell, so it does not happen here. The principal cell still secretes K⁺.'};
+const DEF='Select solutes to follow their routes; others fade. Turn on Moving solutes to watch Na⁺ (olive), K⁺ (red) and water (blue) drift down the lumen and cross the cells, and H⁺ and HCO₃⁻ appear from the α-intercalated cell. Try aldosterone, ADH and K⁺-sparing diuretics.';
+const SP=[['s0','#f4d8db','#d58f98'],['s1','#e2f2f4','#5fb0bd'],['s2','#dcd6ef','#8f84bb'],['s3','#e4f3de','#8fc486'],['s4','#f7e3c6','#d9a468']];
+$('#defs').insertAdjacentHTML('beforeend',SP.map(([i,a,b])=>`<radialGradient id="${i}" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#fff"/><stop offset=".3" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></radialGradient>`).join(''));
+const arrow=(x1,y,x2)=>`<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="#111" stroke-width="2.4" marker-end="url(#ah)"/>`;
+const txt=(t,x,y,s=20)=>`<text x="${x}" y="${y}" font-size="${s}" fill="#111" dominant-baseline="central">${t}</text>`;
+const ctr=(t,x,y,s=18)=>`<text x="${x}" y="${y}" font-size="${s}" fill="#111" text-anchor="middle" dominant-baseline="central">${t}</text>`;
+const el=(k,i)=>`<g class="el" data-k="${k}">${i}</g>`;
+const lab=(t,c,s)=>`<text y="1" font-size="${s}" font-weight="bold" fill="${c}" text-anchor="middle" dominant-baseline="central" pointer-events="none">${t}</text>`;
+const tp=(k,x,y,f,n,l,c='#1d2a1d',s=15)=>`<g class="el tp" data-k="${k}" data-x="${x}" data-y="${y}" transform="translate(${x},${y})"><title>${n}</title><circle r="34" fill="url(#${f})" stroke="#555" stroke-opacity=".5" stroke-width="2"/>${lab(l,c,s)}</g>`;
+const X=(x,y)=>`<line x1="${x-16}" y1="${y-16}" x2="${x+16}" y2="${y+16}" stroke="#c0281f" stroke-width="5"/><line x1="${x+16}" y1="${y-16}" x2="${x-16}" y2="${y+16}" stroke="#c0281f" stroke-width="5"/>`;
+const NT=(t,x,y)=>`<text x="${x}" y="${y}" font-size="13" font-weight="bold" fill="#c0281f" dominant-baseline="central">${t}</text>`;
+const dsh=d=>`<path d="${d}" fill="none" stroke="#111" stroke-width="2.2" stroke-dasharray="7 5" marker-end="url(#ah)"/>`;
+let h='';
+h+='<g class="al">'+el('H',arrow(355,215,225)+txt('H⁺',366,215))+el('H',arrow(355,304,225)+txt('H⁺',366,304))+el('K',arrow(225,356,355)+txt('K⁺',366,356))+'</g>';
+h+=el('Na',arrow(815,189,945)+txt('Na⁺',957,189))+el('K',arrow(945,241,815)+txt('K⁺',957,241))+'<g class="al">'+el('K',arrow(815,330,945)+txt('K⁺',957,330))+'</g>';
+h+='<g class="al">'+el('H B',ctr('H⁺ + HCO₃⁻',585,225)+ctr('CO₂+H₂O',585,332)+'<line x1="585" y1="312" x2="585" y2="244" stroke="#111" stroke-width="2.2" marker-end="url(#ah)"/>'+txt('CA',600,278,16)+dsh('M520 215 L455 215'))+'</g>';
+h+='<g class="al">'+el('B',dsh('M610 205 L610 165 L1090 165')+ctr('HCO₃⁻',850,148,16))+'</g>';
+h+='<g class="be" style="display:none">'+el('B',arrow(355,234,225)+txt('HCO₃⁻',366,234))+el('Cl',arrow(225,286,355)+txt('Cl⁻',366,286))+el('H',arrow(815,300,945)+txt('H⁺',957,300))+el('Cl',arrow(815,365,945)+txt('Cl⁻',957,365))+el('H B',ctr('HCO₃⁻ + H⁺',585,225)+ctr('CO₂+H₂O',585,332)+'<line x1="585" y1="312" x2="585" y2="244" stroke="#111" stroke-width="2.2" marker-end="url(#ah)"/>'+txt('CA',600,278,16)+dsh('M650 235 L805 292')+dsh('M520 228 L462 232'))+tp('B Cl',290,260,'s2','Pendrin Cl⁻/HCO₃⁻ exchanger','Pendrin','#1d2a1d',12)+tp('H',880,300,'s1','H⁺-ATPase','ATP','#1a6a8a')+'</g>';
+h+=el('Na',arrow(225,565,355)+txt('Na⁺',366,565))+el('Na',arrow(815,494,945)+txt('Na⁺',957,494))+el('K',arrow(945,546,815)+txt('K⁺',957,546))+el('K',arrow(355,690,225)+txt('K⁺',366,690));
+h+=el('H2O',arrow(130,765,1090)+'<text x="48" y="765" font-size="26" font-weight="bold" fill="#2b6fd6" dominant-baseline="central">H₂O</text><rect x="500" y="735" width="170" height="26" fill="#f8d7d7"/>'+ctr('Requires ADH',585,748,16));
+h+='<text x="40" y="640" font-size="16" fill="#111">K⁺-sparing</text><text x="40" y="662" font-size="16" fill="#111">diuretics ⊖</text><path d="M170 640 L255 585" fill="none" stroke="#111" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ah)"/>';
+h+='<g class="al">'+tp('H',290,215,'s1','H⁺-ATPase','ATP','#1a6a8a')+tp('H K',290,330,'s0','H⁺/K⁺-ATPase','ATP','#a0302a')+'</g>'+tp('Na K',880,215,'s3','Na⁺–K⁺ ATPase','ATP','#2a4a9a');
+h+=tp('Na',290,565,'s2','ENaC Na⁺ channel','ENaC')+tp('Na K',880,520,'s3','Na⁺–K⁺ ATPase','ATP','#2a4a9a')+tp('K',290,690,'s2','Apical K⁺ channel','K⁺ ch','#1d2a1d',13);
+h+='<g class="ald" style="display:none">'+[498,630].map(y=>arrow(225,y,355)+txt('Na⁺',366,y)+`<circle cx="290" cy="${y}" r="26" fill="url(#s2)" stroke="#c0281f" stroke-width="2.5"/><text x="290" y="${y+1}" font-size="11" font-weight="bold" fill="#1d2a1d" text-anchor="middle" dominant-baseline="central">ENaC</text>`).join('')+arrow(815,604,945)+txt('Na⁺',957,604)+arrow(945,636,815)+txt('K⁺',957,636)+'<circle cx="880" cy="620" r="34" fill="url(#s3)" stroke="#c0281f" stroke-width="2.5"/><text x="880" y="621" font-size="15" font-weight="bold" fill="#2a4a9a" text-anchor="middle" dominant-baseline="central">ATP</text><text x="40" y="500" font-size="14" font-weight="bold" fill="#c0281f">↑ ENaC</text><text x="925" y="680" font-size="14" font-weight="bold" fill="#c0281f">↑ Na⁺–K⁺ ATPase</text></g>';
+h+=tp('H2O',290,765,'s1','Aquaporin 2','AQP2','#1d2a1d',13)+tp('H2O',880,765,'s1','Aquaporins 3 and 4','AQP3,4','#1d2a1d',12);
+const FL=[['H',430,215,150],['H',430,304,150],['K',150,356,430],['Na',780,189,1060],['K',1060,241,780],['K',780,330,1060],['B',640,165,1090],['Na',150,565,430],['Na',780,494,1060],['K',1060,546,780],['K',430,690,150],['H2O',150,765,1060],['B',430,234,150],['Cl',150,286,430],['H',780,300,1060],['Cl',780,365,1060]];
+const FM={0:'a',1:'a',2:'a',5:'a',6:'a',12:'b',13:'b',14:'b',15:'b'};
+FL.forEach((f,i)=>{[0,.5].forEach(p=>{const l=SH[f[0]],w=Math.max(42,l.length*10+18);h+=`<g class="tk" data-f="${i}" data-p="${p}" style="display:none"><rect x="${-w/2}" y="-13" width="${w}" height="26" rx="13" fill="${TK[f[0]][1]}"/><text font-size="15" font-weight="bold" fill="#fff" text-anchor="middle" dominant-baseline="central">${l}</text></g>`})});
+$('#dyn').innerHTML=h;
+// Water entry begins only after ADH-dependent AQP2 insertion.
+const waterDrops=document.createElementNS('http://www.w3.org/2000/svg','g');waterDrops.id='adh-water-drops';waterDrops.setAttribute('pointer-events','none');$('#dyn').appendChild(waterDrops);
+for(let i=0;i<5;i++){const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('r','8');c.setAttribute('fill','#258ad8');c.setAttribute('stroke','#fff');c.setAttribute('stroke-width','2');waterDrops.appendChild(c)}
+$('#fx').innerHTML=`<g class="fx" data-k="ALD" style="display:none">${NT('Aldosterone ↑: Na⁺/K⁺-ATPase, ENaC,',40,375)}${NT('H⁺-ATPase and K⁺ channel activity ↑',40,393)}${NT('NaCl reabsorption ↑',40,411)}</g><g class="fx" data-k="ADH" style="display:none">${NT('ADH on: AQP2 inserted, water leaves',420,700)}</g><g class="fx" data-k="KSD" style="display:none">${X(290,565)}${NT('Less Na⁺ entry, less K⁺ and H⁺ secreted',40,380)}</g>`;
+const act=new Set();let last=null;let BETA=false;const bar=$('#bar');
+INFO.LID='<b>Liddle syndrome</b> is an autosomal dominant gain-of-function of ENaC (usually SCNN1B or SCNN1G), increasing apical Na⁺ entry independently of aldosterone. This increases lumen-negative voltage and promotes K⁺ and H⁺ secretion, causing hypertension, hypokalaemia and metabolic alkalosis, with suppressed renin and aldosterone. Amiloride or triamterene blocks ENaC; spironolactone is generally ineffective.';
+INFO.DI='<b>Diabetes insipidus</b>: collecting-duct water reabsorption is reduced because ADH is absent (central DI) or the kidney does not respond appropriately to ADH (nephrogenic DI). AQP2 is not functionally inserted in the apical membrane; water remains in the lumen, producing large volumes of dilute urine. If drinking does not replace losses, dehydration and hypernatraemia may occur.';
+const FX={DI:['Diabetes insipidus','#276aa3'],LID:['Liddle syndrome','#a35b13'],ALD:['Aldosterone ↑','#a0302a'],ADH:['ADH','#2b6fd6'],KSD:['K⁺-sparing diuretics','#7a3b8c']};
+const mk=(par,k,name,col)=>{const b=document.createElement('button');b.className='sb';b.dataset.k=k;b.style.setProperty('--c',col);b.textContent=name;b.onclick=()=>{if(act.has(k))act.delete(k);else{act.add(k);last=k;if(k==='LID')act.delete('ALD');if(k==='ALD')act.delete('LID');if(k==='DI')act.delete('ADH');if(k==='ADH')act.delete('DI')}if(!act.has(last))last=[...act].pop()||null;upd()};par.appendChild(b)};
+Object.keys(TK).forEach(k=>mk(bar,k,TK[k][0],TK[k][1]));
+['Na','K','H2O'].forEach(k=>bar.querySelector(`[data-k="${k}"]`).classList.add('dot'));
+Object.keys(FX).forEach(k=>mk($('#bar2'),k,FX[k][0],FX[k][1]));
+[['All',()=>{Object.keys(TK).forEach(k=>act.add(k));last='Na'}],['Clear',()=>{act.clear();last=null}]].forEach(([n,f])=>{const b=document.createElement('button');b.className='sb g';b.textContent=n;b.onclick=()=>{f();upd()};bar.appendChild(b)});
+$('#fx').insertAdjacentHTML('beforeend',`<g class="fx" data-k="DI" style="display:none"><text x="40" y="710" font-size="18" font-weight="bold" fill="#236eaa">DI: water stays in lumen ↓</text><path d="M170 755 L170 812" stroke="#236eaa" stroke-width="5" fill="none" marker-end="url(#ah)"/><text x="45" y="790" font-size="16" fill="#236eaa">↑ dilute urine</text><path d="M272 749 L306 781 M306 749 L272 781" stroke="#c42b26" stroke-width="5"/></g>`);
+$('#fx').insertAdjacentHTML('beforeend',`<g class="fx" data-k="LID" style="display:none">${NT('Liddle: ENaC gain-of-function',40,505)}${NT('↑ Na⁺ uptake; ↑ K⁺ and H⁺ secretion',40,523)}${NT('Low renin and low aldosterone',40,541)}<circle cx="290" cy="565" r="39" fill="none" stroke="#b45e12" stroke-width="5"/><path d="M 270 605 L 290 617 L 310 605" fill="none" stroke="#b45e12" stroke-width="4"/></g>`);
+// Liddle-specific enhanced transport: active even without individual solute selections.
+$('#fx').insertAdjacentHTML('beforeend',`<g id="liddleArrows" class="fx" data-k="LID" style="display:none"><g class="pulse"><path d="M215 610 H365" stroke="#a27d13" stroke-width="6" fill="none" marker-end="url(#ah)"/><text x="370" y="613" font-size="16" font-weight="bold" fill="#795b08">↑ Na⁺</text><path d="M380 673 H220" stroke="#c12d24" stroke-width="5" fill="none" marker-end="url(#ah)"/><text x="390" y="676" font-size="16" font-weight="bold" fill="#b22b23">↑ K⁺ secretion</text></g><text x="940" y="725" font-size="17" font-weight="bold" fill="#a35b13">↑ Na⁺ retention</text></g>`);
+function fade(e,on){e.style.display='';e.style.visibility=on?'visible':'hidden';e.style.opacity=on?'1':'0'}
+function upd(){const di=$('#diOut');if(act.has('DI')){di.style.display='block';requestAnimationFrame(()=>di.classList.add('show'))}else{di.classList.remove('show');setTimeout(()=>{if(!act.has('DI'))di.style.display='none'},500)}const lo=$('#liddleOut');if(act.has('LID')){lo.style.display='block';requestAnimationFrame(()=>lo.classList.add('show'))}else{lo.classList.remove('show');setTimeout(()=>{if(!act.has('LID'))lo.style.display='none'},500)}document.querySelectorAll('.tp').forEach(e=>{if(e.querySelector('title')?.textContent==='Aquaporin 2')fade(e,act.has('ADH'))});document.querySelectorAll('.el[data-k="H2O"]:not(.tp)').forEach(e=>fade(e,act.has('ADH')));document.querySelectorAll('.ald').forEach(e=>fade(e,act.has('ALD')));document.querySelectorAll('.mv').forEach(e=>e.textContent=act.has('KSD')?'−30 mV':act.has('LID')?'−65 mV':'−50 mV');
+const any=[...act].some(k=>TK[k]);document.querySelectorAll('.fx').forEach(e=>fade(e,act.has(e.dataset.k)));
+document.querySelectorAll('.el').forEach(e=>{const m=e.dataset.k.split(' ').some(k=>act.has(k));e.style.opacity=(any&&!m?.28:1)});
+document.querySelectorAll('.tp').forEach(e=>{if(e.querySelector('title')?.textContent==='Aquaporin 2')fade(e,act.has('ADH')&&!act.has('DI'))});document.querySelectorAll('.sb[data-k]').forEach(b=>b.classList.toggle('on',act.has(b.dataset.k)));
+$('#info').innerHTML=last?((BETA&&INFOB[last])||INFO[last])+(act.size>1?`<br><span style="font-size:13px;opacity:.75">Showing ${act.size} items; the text describes the one you picked last.</span>`:''):DEF}
+const PC={Na:'#8d8a1b',K:'#d62d20',H:'#2b4fd6',B:'#b8505e',W:'#2b8fd6',Cl:'#2e7d4f'},PN={Na:'Na⁺',K:'K⁺',H:'H⁺',B:'HCO₃⁻',W:'Water',Cl:'Cl⁻'},AK={Na:'Na',K:'K',H:'H',B:'B',W:'H2O',Cl:'Cl'},PG=$('#ptc'),PT=[];
+const LY={ka:356,na:565,w:765,cl:260};
+const RTE={ka:[[290,356],[800,330],[1150,330]],na:[[290,565],[800,494],[945,494],[1150,494]],w:[[290,765],[880,765],[1150,765]],h1:[[585,225],[420,215],[290,215],[240,215]],h2:[[585,225],[420,304],[290,304],[240,304]],b:[[585,225],[610,165],[1090,165],[1150,165]],kp:[[1150,546],[880,546],[600,640],[290,690],[240,690]],cl:[[290,260],[800,365],[1150,365]],hb:[[585,225],[800,300],[945,300],[1150,300]],bl:[[585,225],[440,234],[290,234],[240,234]]};
+function prob(p){if(p.rt==='na')return act.has('KSD')?.05:act.has('LID')?.96:act.has('ALD')?.9:.55;if(p.rt==='ka')return BETA?0:.6;if(p.rt==='cl')return .7;return act.has('ADH')?.9:0}
+function addP(kind,rt,pre,cell){const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.innerHTML=`<title>${PN[kind]}</title><circle r="10" fill="${PC[kind]}" stroke="#fff" stroke-width="2"/>`;PG.appendChild(g);
+const p={kind,k:AK[kind],rt,vy:36+Math.random()*14,ph:Math.random()*6.3,a:pre?1:0,fade:1,g};
+if(cell){p.wp=RTE[rt].map(a=>a.slice());p.x=p.wp[0][0];p.y=p.wp[0][1];p.wp.shift();p.st='path';p.a=1;p.out=rt==='h1'||rt==='h2'||rt==='bl'||rt==='kp'}
+else{p.ly=LY[rt];p.st='drift';p.x=50+Math.random()*210;p.y=pre?140+Math.random()*Math.max(10,p.ly-220):140}
+PT.push(p)}
+function mkP(pre){const u=Math.random();
+if(u<.1){if(!pre&&Math.random()<((act.has('ALD')||act.has('LID'))?1:.5)){if(BETA){addP('H','hb',0,1);addP('B','bl',0,1)}else{addP('H',Math.random()<.6?'h1':'h2',0,1);addP('B','b',0,1)}}return}
+if(u<.2){if(!pre&&Math.random()<(act.has('KSD')?.15:(act.has('ALD')||act.has('LID'))?1:.5))addP('K','kp',0,1);return}
+const v=Math.random();if(BETA&&v<.2)addP('Cl','cl',pre);else if(v<.5)addP('Na','na',pre);else if(v<.7)addP('K','ka',pre);else if(act.has('ADH'))addP('W','w',pre)}
+let showP=false;
+function stepP(t,dt){PG.style.opacity=showP?'1':'0';PG.style.visibility=showP?'visible':'hidden';$('#fl').style.opacity=showP?'1':'0';if(!showP)return;
+if(PT.length<70&&t-(stepP.s||0)>.35){stepP.s=t;mkP(0)}
+const any=Object.keys(TK).some(k=>act.has(k));
+for(let i=PT.length-1;i>=0;i--){const p=PT[i];p.a=Math.min(1,p.a+dt*2);
+if(p.st==='drift'){p.y+=p.vy*dt;p.x=Math.min(262,Math.max(48,p.x+Math.sin(t*1.7+p.ph)*12*dt));if(!p.passed&&p.y>=p.ly-70)p.st='appr';p.fade=Math.max(0,Math.min(1,(812-p.y)/40))}
+else if(p.st==='appr'){const dx=252-p.x,dy=p.ly-p.y,d=Math.hypot(dx,dy);if(d<4){if(Math.random()<prob(p)){p.wp=RTE[p.rt].map(a=>a.slice());p.st='path'}else{p.passed=true;p.st='drift'}}else{const s=Math.min(d,95*dt);p.x+=dx/d*s;p.y+=dy/d*s}}
+else if(p.st==='path'){const w=p.wp[0],dx=w[0]-p.x,dy=w[1]-p.y,d=Math.hypot(dx,dy),s=150*dt;if(d<=s){p.x=w[0];p.y=w[1];p.wp.shift();if(!p.wp.length){if(p.out){p.st='drift';p.passed=true;p.x=240}else p.st='cap'}}else{p.x+=dx/d*s;p.y+=dy/d*s}}
+else{p.y+=40*dt;p.fade-=dt*.9}
+if((p.st==='drift'&&p.y>815)||p.fade<=0){p.g.remove();PT.splice(i,1);continue}
+const on=act.has(p.k)||(p.kind==='W'&&act.has('ADH'));p.g.setAttribute('opacity',(p.a*p.fade*(any&&!on?.28:1)).toFixed(2));
+p.g.setAttribute('transform',`translate(${p.x.toFixed(1)},${p.y.toFixed(1)}) scale(${on?1.3:1})`)}}
+{const b=document.createElement('button');b.className='sb g';b.textContent='Moving solutes';b.onclick=()=>{showP=!showP;b.classList.toggle('on',showP);bar.classList.toggle('pon',showP)};bar.appendChild(b)}
+for(let i=0;i<24;i++)mkP(1);
+const diWater=document.createElementNS('http://www.w3.org/2000/svg','g');diWater.setAttribute('id','di-lumen-water');diWater.style.transition='opacity .5s ease';for(let i=0;i<9;i++){const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('r',8);c.setAttribute('fill','#2b8fd6');c.setAttribute('stroke','#e7f7ff');c.setAttribute('stroke-width',2);diWater.appendChild(c)}$('#fx').appendChild(diWater);
+const tps=[...document.querySelectorAll('.tp')],tks=[...document.querySelectorAll('.tk')];
+let pt=0;function loop(ts){const t=ts/1000,dt=Math.min(.05,t-(pt||t));pt=t;stepP(t,dt);
+tks.forEach(k=>{const f=FL[k.dataset.f],fm=FM[k.dataset.f],on=(act.has(f[0])||(f[0]==='H2O'&&act.has('ADH')))&&(f[0]!=='H2O'||act.has('ADH'))&&(!fm||fm===(BETA?'b':'a'));k.style.display='';k.style.visibility=on?'visible':'hidden';if(on){const u=(t/2.6+ +k.dataset.p)%1;k.setAttribute('transform',`translate(${f[1]+(f[3]-f[1])*u},${f[2]})`);k.setAttribute('opacity',Math.sin(Math.PI*u).toFixed(2))}});
+diWater.style.opacity=act.has('DI')?'1':'0';diWater.style.visibility=act.has('DI')?'visible':'hidden';[...diWater.children].forEach((c,i)=>{const y=475+((t*48+i*43)%333);c.setAttribute('cx',(105+32*Math.sin(i*2.3+t*.6)).toFixed(1));c.setAttribute('cy',y.toFixed(1))});
+waterDrops.style.display='';waterDrops.style.visibility=act.has('ADH')?'visible':'hidden';waterDrops.style.opacity=act.has('ADH')?'1':'0';if(act.has('ADH'))[...waterDrops.children].forEach((c,i)=>{const u=(t/3+i/5)%1;c.setAttribute('cx',(160+960*u).toFixed(1));c.setAttribute('cy',(765+5*Math.sin(t*3+i)).toFixed(1));c.setAttribute('opacity',Math.sin(Math.PI*u).toFixed(2))});
+tps.forEach(p=>{const on=p.dataset.k.split(' ').some(k=>act.has(k)),s=on?1+.09*Math.sin(t*4):1;p.setAttribute('transform',`translate(${p.dataset.x},${p.dataset.y}) scale(${s.toFixed(3)})`)});
+requestAnimationFrame(loop)}
+const b3=document.createElement('div');b3.style.cssText='display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0;align-items:center';b3.innerHTML='<span style="font-size:13px;color:#4a5a48">Intercalated cell type:</span>';$('#bar2').before(b3);
+function setMode(m){BETA=m;document.querySelectorAll('.al').forEach(e=>fade(e,!m));document.querySelectorAll('.be').forEach(e=>fade(e,m));$('#ttl').textContent=m?'β-Intercalated cell':'α-Intercalated cell';PT.forEach(p=>p.g.remove());PT.length=0;for(let i=0;i<24;i++)mkP(1);b3.querySelectorAll('button').forEach(b=>b.classList.toggle('on',(b.dataset.m==='b')===m));last='AB';upd()}
+[['a','α-intercalated cell','#2b6fd6'],['b','β-intercalated cell','#c2751f']].forEach(([m,n,c])=>{const b=document.createElement('button');b.className='sb';b.dataset.m=m;b.style.setProperty('--c',c);b.textContent=n;b.onclick=()=>setMode(m==='b');b3.appendChild(b)});
+setMode(false);last=null;upd();requestAnimationFrame(loop);
+</script></body></html>
